@@ -1,17 +1,20 @@
 fn main(){
-    println!("hello world");
-    let mut deck:[i32; 10]=[1,2,3,4,5,6,7,8,9,10]; //sample deck
-    //println!("{}", check_sequence_helper([1,2,3,4,6]));
-    return_card_frequency_helper([1,3,3,3,3],3);
-    println!("here {}",check_flush([1,2,3,4,5]));
-    println!("here2 {}",check_three_of_a_kind([1,2,2,2,2]));
+    // println!("hello world");
+    // let mut deck:[i32; 10]=[1,2,3,4,5,6,7,8,9,10]; //sample deck
+    // //println!("{}", check_sequence_helper([1,2,3,4,6]));
+    // return_card_frequency_helper([1,3,3,3,3],3);
+    // println!("here {}",check_flush([1,2,3,4,5]));
+    // println!("here2 {}",check_three_of_a_kind([1,2,2,2,2]));
+
+    println!("here {:?}",check_royal_flush([27,49,50,51,52]));
 }
 
 
-fn deal(deck: &mut [i32;10]){ //->[i32]
+fn deal(deck: &mut [i32;10]) ->[i32;5] {
     let mut hand1=[deck[0],deck[2],deck[4],deck[6],deck[8]];
     let mut hand2=[deck[1],deck[3],deck[5],deck[7],deck[9]];
-    //winnerdeck //!no semicolon after this to return the result!
+    let mut winner_deck=determine_winner(hand1,hand2);
+    return winner_deck; //TODO print
 }
 
 fn get_card_value(card:i32)->i32{ //returns the card value in the range 0-12
@@ -21,14 +24,14 @@ fn get_card_value(card:i32)->i32{ //returns the card value in the range 0-12
     else {(card-2)%13}
 }
 
-fn get_card_suite(card:i32)->i32{ //returns the card suite
+fn get_card_suite(card:i32)->i32{ //returns the card suite from 0 to 3
     (card-1)/13
 }
 
 fn check_suites_helper(hand:[i32;5])->bool{ //a helper method that returns true is all suites are the same
     let reference_suite=get_card_suite(hand[0]);
     for index in 1..5{ //5, not 4 as it works as range() in Python!
-        if get_card_suite(index)!=reference_suite{
+        if get_card_suite(hand[index])!=reference_suite{
             return false;
         }
     }
@@ -36,8 +39,10 @@ fn check_suites_helper(hand:[i32;5])->bool{ //a helper method that returns true 
 }
 
 fn check_sequence_helper(hand:[i32;5])->bool{ //checks if the cards are in sequence
+    let reduced_hand=sort_hand(convert_hand(hand));
+    println!("reduced hand is {:?}",reduced_hand);
     for index in 0..4{
-        if hand[index+1]-hand[index]!=1{
+        if reduced_hand[index+1]-reduced_hand[index]!=1{
             return false;
         }
     }
@@ -46,9 +51,10 @@ fn check_sequence_helper(hand:[i32;5])->bool{ //checks if the cards are in seque
 
 fn return_card_frequency_helper(hand:[i32;5],number:i32)->bool{ //returns if there are than many cards
     let mut frequences=[0,0,0,0,0];
+    let converted_hand=convert_hand(hand); //the hand has to be converted
     for card in 0..5{
         for index in 0..5{
-            if hand[index]==hand[card]{
+            if converted_hand[index]==converted_hand[card]{
                 frequences[card]+=1;
             }
         }
@@ -81,22 +87,28 @@ fn convert_hand(hand:[i32;5])->[i32;5]{// converts all cards to 0-12 values
     for index in 0..5{
         converted_hand[index]=get_card_value(hand[index]);
     }
+    // if sort_hand(converted_hand)==[0,1,2,3,12]{
+    //     return []
+    // }
     return converted_hand;
 }
 
 fn sort_hand(hand:[i32;5])->[i32;5]{ //sorts the hand in increasing order
     let mut sorted_hand=hand;
-    for index in 0..4{
-        if sorted_hand[index]>sorted_hand[index+1]{
-                let temp=sorted_hand[index+1];
-                sorted_hand[index+1]=sorted_hand[index];
-                sorted_hand[index]=temp;
+    for i in 0..5{
+        for index in 0..4{
+            if sorted_hand[index]>=sorted_hand[index+1]{
+                    let temp=sorted_hand[index+1];
+                    sorted_hand[index+1]=sorted_hand[index];
+                    sorted_hand[index]=temp;
+            }
         }
     }
+    println!("sorted hand is {:?}",sorted_hand);
     return sorted_hand;
 }
 fn check_royal_flush(hand:[i32;5])->bool{ //checks the Royal Flush
-    if check_suites_helper(hand)&&hand==[8,9,10,11,12]{
+    if check_suites_helper(hand)&&sort_hand(convert_hand(hand))==[8,9,10,11,12]{
         return true;
     }
     return false;
