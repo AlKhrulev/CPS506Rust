@@ -4,6 +4,7 @@ fn main(){
     //println!("{}", check_sequence_helper([1,2,3,4,6]));
     return_card_frequency_helper([1,3,3,3,3],3);
     println!("here {}",check_flush([1,2,3,4,5]));
+    println!("here2 {}",check_three_of_a_kind([1,2,2,2,2]));
 }
 
 
@@ -74,6 +75,26 @@ fn return_card_frequency_helper(hand:[i32;5],number:i32)->bool{ //returns if the
     println!("{}", false);
     return false;
 }
+
+fn convert_hand(hand:[i32;5])->[i32;5]{// converts all cards to 0-12 values
+    let mut converted_hand=[0,0,0,0,0];
+    for index in 0..5{
+        converted_hand[index]=get_card_value(hand[index]);
+    }
+    return converted_hand;
+}
+
+fn sort_hand(hand:[i32;5])->[i32;5]{ //sorts the hand in increasing order
+    let mut sorted_hand=hand;
+    for index in 0..4{
+        if sorted_hand[index]>sorted_hand[index+1]{
+                let temp=sorted_hand[index+1];
+                sorted_hand[index+1]=sorted_hand[index];
+                sorted_hand[index]=temp;
+        }
+    }
+    return sorted_hand;
+}
 fn check_royal_flush(hand:[i32;5])->bool{ //checks the Royal Flush
     if check_suites_helper(hand)&&hand==[8,9,10,11,12]{
         return true;
@@ -128,8 +149,25 @@ fn check_pair(hand:[i32;5])->bool{
     return return_card_frequency_helper(hand,1);
 }
 
-fn get_high_card(hand:[i32;5])->i32{
-    return 12; //TODO
+fn get_high_card(hand:[i32;5])->i32{ //returns a high card
+    let mut converted_hand=convert_hand(hand); //obtain a hand in range from 0 to 12
+    let mut max=-1;
+    //case when ace is not high
+    if check_straight(hand){
+        for index in 0..5{
+            if max<converted_hand[index]&&converted_hand[index]!=12{
+                max=converted_hand[index];
+            }
+        }
+        return max;
+    }
+    //regular case
+    for index in 0..5{
+        if max<converted_hand[index]{
+            max=converted_hand[index];
+        }
+    }
+    return max;
 }
 
 
