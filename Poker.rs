@@ -289,13 +289,13 @@ fn determineTieBreaker(hand1:[i32;5],hand2:[i32;5],rank:i32)->[i32;5]{
 }
 
 
-// fn tieBreakRoyalFlush(hand1[i32;5],hand2[i32;5])->[i32;5]{
-//     if( get_card_suite(hand1[0]) > get_card_suite(hand2[0]) ){
-//         return hand1;
-//     }else {
-//         return hand2;
-//     }
-// }
+fn tieBreakRoyalFlush(hand1:[i32;5],hand2:[i32;5])->[i32;5]{
+    if( get_card_suite(hand1[0]) > get_card_suite(hand2[0]) ){
+        return hand1;
+    }else {
+        return hand2;
+    }
+}
 /*
 fn tieBreakStraightFlush(hand1[i32;5],hand2[i32;5])->[i32;5]{
     let hand1Low = (doesHandContain(hand1, 12) && doesHandContain(hand1,0) );
@@ -327,7 +327,11 @@ fn tieBreakStraightFlush(hand1[i32;5],hand2[i32;5])->[i32;5]{
 }
 
 fn tieBreakFour(hand1[i32;5],hand2[i32;5])->[i32;5]{
-    
+    if ( getValueOfRepeat(hand1,4) > getValueOfRepeat(hand2,4)){
+        return hand1;
+    } else {
+        return hand2;
+    }
 }
 /*
 fn tieBreakFull(hand1[i32;5],hand2[i32;5])->[i32;5]{
@@ -399,6 +403,13 @@ fn getValueOfRepeat(hand[i32;5],repeatAmount:i32)->i32{
 }
 
 fn doesValRepeatExactly(hand[i32;5],repeatAmount:i32,faceVal:i32)->bool{
-
+    let mut rep = 0;
+    for card in hand {
+        if get_card_value(card) == faceVal {
+            rep = rep +1;
+        }
+    }
+    return ( rep == repeatAmount);
 }
+
 */
