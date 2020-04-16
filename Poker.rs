@@ -6,7 +6,7 @@ fn main(){
     // println!("here {}",check_flush([1,2,3,4,5]));
     // println!("here2 {}",check_three_of_a_kind([1,2,2,2,2]));
 
-    println!("here {:?}",get_card_value(26));
+    println!("here {:?}",get_high_card([1,2,3,4,5]));
 }
 
 
@@ -40,6 +40,9 @@ fn check_suites_helper(hand:[i32;5])->bool{ //a helper method that returns true 
 
 fn check_sequence_helper(hand:[i32;5])->bool{ //checks if the cards are in sequence
     let reduced_hand=sort_hand(convert_hand(hand));
+    if reduced_hand==[0,1,2,3,12]{ //the case when ace is low(straight)
+        return true;
+    }
     println!("reduced hand is {:?}",reduced_hand);
     for index in 0..4{
         if reduced_hand[index+1]-reduced_hand[index]!=1{
@@ -70,7 +73,7 @@ fn return_card_frequency_helper(hand:[i32;5],number:i32)->bool{ //returns if the
     else if number==1{ //special case for a pair
         let mut vec = frequences.to_vec(); //make a vector of frequences
         vec.sort();
-        return vec==vec![1,1,1,2,2];
+        return vec==vec![1,1,1,2,2]||vec==vec![2,2,3,3,3];
     }
 
     //cases for 3 and 4 are defined below:
@@ -129,7 +132,7 @@ fn check_four_of_a_kind(hand:[i32;5])->bool{ //there are 4 identical cards...
 }
 
 fn check_fullhouse(hand:[i32;5])->bool{//there are 3 identical cards and a pair
-    if return_card_frequency_helper(hand,3)&&return_card_frequency_helper(hand,2){
+    if return_card_frequency_helper(hand,3)&&return_card_frequency_helper(hand,1){
         return true;
     }
     return false;
@@ -162,24 +165,15 @@ fn check_pair(hand:[i32;5])->bool{
 }
 
 fn get_high_card(hand:[i32;5])->i32{ //returns a high card
-    let mut converted_hand=convert_hand(hand); //obtain a hand in range from 0 to 12
-    let mut max=-1;
-    //case when ace is not high
+    let mut converted_hand=sort_hand(convert_hand(hand)); //obtain a hand in range from 0 to 12
+    println!("{:?} converted hand",converted_hand);
     if check_straight(hand){
-        for index in 0..5{
-            if max<converted_hand[index]&&converted_hand[index]!=12{
-                max=converted_hand[index];
-            }
-        }
-        return max;
+        println!("in straight");
+        return converted_hand[3];
     }
-    //regular case
-    for index in 0..5{
-        if max<converted_hand[index]{
-            max=converted_hand[index];
-        }
+    else{
+        return converted_hand[4];
     }
-    return max;
 }
 
 
