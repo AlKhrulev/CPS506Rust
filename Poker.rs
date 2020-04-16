@@ -167,9 +167,8 @@ fn check_pair(hand:[i32;5])->bool{
 fn get_high_card(hand:[i32;5])->i32{ //returns a high card
     let mut converted_hand=sort_hand(convert_hand(hand)); //obtain a hand in range from 0 to 12
     println!("{:?} converted hand",converted_hand);
-    if check_straight(hand){
-        println!("in straight");
-        return converted_hand[3];
+    if converted_hand==[0,1,2,3,12]{ //the only case when ace is low
+        return 3;
     }
     else{
         return converted_hand[4];
@@ -218,7 +217,7 @@ fn determine_winner(hand1:[i32;5],hand2:[i32;5])->[i32;5]{ //determines the winn
         return hand2;
     }
     //TODO Tiebreakers should go here
-    determineTieBreaker(hand1,hand2,rank1);
+    //determineTieBreaker(hand1,hand2,rank1);
 
 
     let highcard1=get_high_card(hand1);
@@ -254,7 +253,7 @@ fn determine_winner(hand1:[i32;5],hand2:[i32;5])->[i32;5]{ //determines the winn
 
 fn determineTieBreaker(hand1:[i32;5],hand2:[i32;5],rank:i32)->[i32;5]{
     if rank==10 {
-        return tieBreakRoyalFlush(hand1,hand2);//
+        //return tieBreakRoyalFlush(hand1,hand2);//
     }
     /*
     else if rank==9 {
@@ -285,17 +284,18 @@ fn determineTieBreaker(hand1:[i32;5],hand2:[i32;5],rank:i32)->[i32;5]{
     */
 
     //temp
-    return tieBreakRoyalFlush(hand1,hand2);
+    //return tieBreakRoyalFlush(hand1,hand2);
+    return [];
 }
 
 
-fn tieBreakRoyalFlush(hand1[i32;5],hand2[i32;5])->[i32;5]{
-    if( get_card_suite(hand1[0]) > get_card_suite(hand2[0]) ){
-        return hand1;
-    }else {
-        return hand2;
-    }
-}
+// fn tieBreakRoyalFlush(hand1[i32;5],hand2[i32;5])->[i32;5]{
+//     if( get_card_suite(hand1[0]) > get_card_suite(hand2[0]) ){
+//         return hand1;
+//     }else {
+//         return hand2;
+//     }
+// }
 /*
 fn tieBreakStraightFlush(hand1[i32;5],hand2[i32;5])->[i32;5]{
     let hand1Low = (doesHandContain(hand1, 12) && doesHandContain(hand1,0) );
