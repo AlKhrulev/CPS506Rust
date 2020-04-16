@@ -6,11 +6,7 @@ fn main(){
     // println!("here {}",check_flush([1,2,3,4,5]));
     // println!("here2 {}",check_three_of_a_kind([1,2,2,2,2]));
 
-<<<<<<< HEAD
-    println!("here {:?}",check_royal_flush([27,49,50,51,52]));
-=======
     println!("here {:?}",get_high_card([1,2,3,4,5]));
->>>>>>> 0ca9d72335e6d2f640cc058a598cab4b22188414
 }
 
 
@@ -300,7 +296,7 @@ fn tieBreakRoyalFlush(hand1[i32;5],hand2[i32;5])->[i32;5]{
         return hand2;
     }
 }
-
+/*
 fn tieBreakStraightFlush(hand1[i32;5],hand2[i32;5])->[i32;5]{
     let hand1Low = (doesHandContain(hand1, 12) && doesHandContain(hand1,0) );
     let hand2Low = (doesHandContain(hand2, 12) && doesHandContain(hand2,0) );  
@@ -405,3 +401,4 @@ fn getValueOfRepeat(hand[i32;5],repeatAmount:i32)->i32{
 fn doesValRepeatExactly(hand[i32;5],repeatAmount:i32,faceVal:i32)->bool{
 
 }
+*/
