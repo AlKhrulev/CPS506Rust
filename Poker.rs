@@ -6,7 +6,7 @@ fn main(){
     // println!("here {}",check_flush([1,2,3,4,5]));
     // println!("here2 {}",check_three_of_a_kind([1,2,2,2,2]));
 
-    println!("here {:?}",check_royal_flush([27,49,50,51,52]));
+    println!("here {:?}",get_card_value(26));
 }
 
 
