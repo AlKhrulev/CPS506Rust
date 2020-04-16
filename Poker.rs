@@ -6,7 +6,7 @@ fn main(){
     // println!("here {}",check_flush([1,2,3,4,5]));
     // println!("here2 {}",check_three_of_a_kind([1,2,2,2,2]));
 
-    println!("here {:?}",get_card_value(26));
+    println!("here {:?}",check_royal_flush([27,49,50,51,52]));
 }
 
 
@@ -224,6 +224,9 @@ fn determine_winner(hand1:[i32;5],hand2:[i32;5])->[i32;5]{ //determines the winn
         return hand2;
     }
     //TODO Tiebreakers should go here
+    determineTieBreaker(hand1,hand2,rank1);
+
+
     let highcard1=get_high_card(hand1);
     let highcard2=get_high_card(hand2);
     if highcard1>highcard2{
@@ -244,3 +247,163 @@ fn determine_winner(hand1:[i32;5],hand2:[i32;5])->[i32;5]{ //determines the winn
 
 
 
+
+
+
+
+
+
+
+
+
+//--------------------------------- tie breaker functions---------------------------
+
+fn determineTieBreaker(hand1:[i32;5],hand2:[i32;5],rank:i32)->[i32;5]{
+    if rank==10 {
+        return tieBreakRoyalFlush(hand1,hand2);//
+    }
+    /*
+    else if rank==9 {
+        return tieBreakStraightFlush(hand1,hand2);//9;
+    }
+    else if rank==8 {
+        return tieBreakFour(hand1,hand2);//8;
+    }
+    else if rank==7 {
+        return tieBreakFull(hand1,hand2);//7;
+    }
+    else if rank==6 {
+        return tieBreakFlush(hand1,hand2);//6;
+    }
+    else if rank==5 {
+        return tieBreakStraight(hand1,hand2);//5;
+    }
+    else if rank==4 {
+        return tieBreakThree(hand1,hand2);//4;
+    }
+    else if rank==3 {
+        return tieBreakTwoPair(hand1,hand2);//3;
+    }
+    else if rank==2 {
+        return tieBreakPair(hand1,hand2);//2;
+    }
+    return tieBreakHigh(hand1,hand2);
+    */
+
+    //temp
+    return tieBreakRoyalFlush(hand1,hand2);
+}
+
+
+fn tieBreakRoyalFlush(hand1[i32;5],hand2[i32;5])->[i32;5]{
+    if( get_card_suite(hand1[0]) > get_card_suite(hand2[0]) ){
+        return hand1;
+    }else {
+        return hand2;
+    }
+}
+
+fn tieBreakStraightFlush(hand1[i32;5],hand2[i32;5])->[i32;5]{
+    let hand1Low = (doesHandContain(hand1, 12) && doesHandContain(hand1,0) );
+    let hand2Low = (doesHandContain(hand2, 12) && doesHandContain(hand2,0) );  
+    if( hand1Low && hand2Low  ){
+        //suit compare
+        if( get_card_suite(hand1[0]) > get_card_suite(hand2[0]) ){
+            return hand1;
+        } else {
+            return hand2;
+        }
+    } else if (hand1Low){
+        return hand2;
+    }else if(hand2Low){
+        return hand1;
+    }
+
+    //ace is high
+    if( getHighestFaceVal(hand1) > getHighestFaceVal(hand2)){
+        return hand1;
+    } else if (getHighestFaceVal(hand2) > getHighestFaceVal(hand1)){
+        return hand2;
+    } else if( getSuitOfHighestFaceVal(hand1) > getSuitOfHighestFaceVal(hand2)){
+        return hand1;
+    }else {
+        return hand2;
+    }
+
+}
+
+fn tieBreakFour(hand1[i32;5],hand2[i32;5])->[i32;5]{
+    
+}
+/*
+fn tieBreakFull(hand1[i32;5],hand2[i32;5])->[i32;5]{
+    
+}
+fn tieBreakFlush(hand1[i32;5],hand2[i32;5])->[i32;5]{
+    
+}
+fn tieBreakStraight(hand1[i32;5],hand2[i32;5])->[i32;5]{
+    
+}
+fn tieBreakThree(hand1[i32;5],hand2[i32;5])->[i32;5]{
+    
+}
+fn tieBreakTwoPair(hand1[i32;5],hand2[i32;5])->[i32;5]{
+    
+}
+fn tieBreakPair(hand1[i32;5],hand2[i32;5])->[i32;5]{
+    
+}
+fn tieBreakHigh(hand1[i32;5],hand2[i32;5])->[i32;5]{
+    
+}
+*/
+
+//helper functions
+
+//faceVal from 0-12
+fn doesHandContain(hand[i32;5],faceVal:i32)->bool{
+    for (index,ele) in hand.enumerate() {
+        if( get_card_value(ele) == faceVal){
+            return true;
+        }
+    }
+    return false;
+}
+
+fn getHighestFaceVal(hand[i32;5])->i32{
+    let mut highest = get_high_card(hand[0]);
+    for card in hand{
+        if( get_card_value(card) > highest){
+            highest = get_card_value(card);
+        }
+    }
+    return highest;
+}
+
+fn getSuitOfHighestFaceVal(hand[i32;5])->i32{
+    let mut highest = get_high_card(hand[0]);
+    let mut suite = get_card_suite(hand[0]);
+    for card in hand{
+        if( get_card_value(card) > highest){
+            highest = get_card_value(card);
+            suite = get_card_suite(card);
+        }
+    }
+    return suite;
+}
+
+//return the first instance of the amount repeated
+fn getValueOfRepeat(hand[i32;5],repeatAmount:i32)->i32{
+    for card in hand{
+        if doesValRepeatExactly(hand,repeatAmount, get_card_value(card) ) {
+            return get_card_value(card);
+        }
+    }
+    printlln!("Error on getValueOfRepeat - returned -1");
+    return -1;//this is an error state
+}
+
+fn doesValRepeatExactly(hand[i32;5],repeatAmount:i32,faceVal:i32)->bool{
+
+}
