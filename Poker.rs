@@ -6,7 +6,7 @@ fn main(){
     // println!("here {}",check_flush([1,2,3,4,5]));
     // println!("here2 {}",check_three_of_a_kind([1,2,2,2,2]));
 
-    println!("here {:?}",get_high_card([1,2,3,4,5]));
+    println!("here {:?}",get_high_card([52,51,50,49,40]));
 }
 
 
@@ -284,8 +284,7 @@ fn determineTieBreaker(hand1:[i32;5],hand2:[i32;5],rank:i32)->[i32;5]{
     */
 
     //temp
-    //return tieBreakRoyalFlush(hand1,hand2);
-    return [];
+    return tieBreakRoyalFlush(hand1,hand2);
 }
 
 
