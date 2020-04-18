@@ -6,7 +6,7 @@ fn main(){
     // println!("here {}",check_flush([1,2,3,4,5]));
     // println!("here2 {}",check_three_of_a_kind([1,2,2,2,2]));
 
-    println!("here {:?}",get_high_card([52,51,50,49,40]));
+    println!("here {:?}",format_output([1,10,11,12,13]));
 }
 
 
@@ -237,6 +237,57 @@ fn determine_winner(hand1:[i32;5],hand2:[i32;5])->[i32;5]{ //determines the winn
         return hand2;
     }
 }
+
+
+fn format_output(hand:[i32;5])->[String;5]{ //returns a formatted winning hand
+    let mut result: [String; 5] = Default::default(); //a list holding 5 String objects
+
+    for index in 0..5{
+        //concatinates the card value from 1-13 and a String suit
+        result[index]=format!("{}{}", String::from(return_card_value_helper(hand[index])), String::from(return_string_suit_helper(hand[index])));
+    }
+
+    
+    let mut temp=String::new(); //holds a value for swap
+    //sorts a list in ascending order
+    for i in 0..5{
+        for j in 0..4{
+            if result[j+1]<result[j]{
+                temp=result[j+1].clone();
+                result[j+1]=result[j].clone();
+                result[j]=temp.clone();
+            }
+        }
+    }
+
+    return result;
+}
+
+
+fn return_string_suit_helper(card_number:i32)->String{ //returns a string suit
+    if card_number<=13{
+        return "C".to_string();
+    }
+    if card_number<=26{
+        return "D".to_string();
+    }
+    if card_number<=39{
+        return "H".to_string();
+    }
+    
+    return "S".to_string();
+}
+
+fn return_card_value_helper(card_number:i32)->String{ //returns a card value in the range from 1 to 13
+    if card_number>13{
+        return return_card_value_helper(card_number-13);
+    }
+    else{
+        return card_number.to_string();
+    }
+}
+
+
 
 
 
