@@ -6,7 +6,10 @@ fn main(){
     // println!("here {}",check_flush([1,2,3,4,5]));
     // println!("here2 {}",check_three_of_a_kind([1,2,2,2,2]));
 
-    println!("here {:?}",format_output([1,10,11,12,13]));
+    //println!("here {:?}",format_output([1,10,11,12,13]));
+
+    test(); //runs the test cases
+
 }
 
 
@@ -14,7 +17,7 @@ fn deal(deck: &mut [i32;10]) ->[i32;5] {
     let mut hand1=[deck[0],deck[2],deck[4],deck[6],deck[8]];
     let mut hand2=[deck[1],deck[3],deck[5],deck[7],deck[9]];
     let mut winner_deck=determine_winner(hand1,hand2);
-    return winner_deck; //TODO print
+    winner_deck 
 }
 
 fn get_card_value(card:i32)->i32{ //returns the card value in the range 0-12
@@ -247,7 +250,7 @@ fn format_output(hand:[i32;5])->[String;5]{ //returns a formatted winning hand
         result[index]=format!("{}{}", String::from(return_card_value_helper(hand[index])), String::from(return_string_suit_helper(hand[index])));
     }
 
-    
+
     let mut temp=String::new(); //holds a value for swap
     //sorts a list in ascending order
     for i in 0..5{
@@ -287,7 +290,18 @@ fn return_card_value_helper(card_number:i32)->String{ //returns a card value in 
     }
 }
 
-
+fn test(){
+    //TODO Modify both lists and add proper test cases
+    let test_cases=[[1,2,3,4,5],[1,10,11,12,13]];
+    let correct_result=[["1C", "2C", "3C", "4C", "5C"],["10C", "11C", "12C", "13C", "1C"]];
+    for i in 0..test_cases.len(){
+        //let result=format_output(deal(test_cases[i])); //TODO uncomment this line to tell the overall program
+        let result=format_output(test_cases[i]); //TODO comment this line out
+        if result!=correct_result[i]{
+            println!("Case-{:?} Correct Result-{:?} Incorrect Result/Output-{:?}",test_cases[i],correct_result[i],result);
+        }
+    }
+}
 
 
 
