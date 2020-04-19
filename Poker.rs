@@ -46,7 +46,7 @@ fn check_sequence_helper(hand:[i32;5])->bool{ //checks if the cards are in seque
     if reduced_hand==[0,1,2,3,12]{ //the case when ace is low(straight)
         return true;
     }
-    println!("reduced hand is {:?}",reduced_hand);
+    //println!("reduced hand is {:?}",reduced_hand);
     for index in 0..4{
         if reduced_hand[index+1]-reduced_hand[index]!=1{
             return false;
@@ -65,7 +65,7 @@ fn return_card_frequency_helper(hand:[i32;5],number:i32)->bool{ //returns if the
             }
         }
     }
-    println!("{:?}", frequences);
+    //println!("{:?}", frequences);
 
     if number==2{  //special case for 2 pairs
         let mut vec = frequences.to_vec(); //make a vector of frequences
@@ -81,10 +81,10 @@ fn return_card_frequency_helper(hand:[i32;5],number:i32)->bool{ //returns if the
 
     //cases for 3 and 4 are defined below:
     if frequences.iter().any(|&x| x == number){ //checks if any number is equal to the desired one
-        println!("{}", true);
+        //println!("{}", true);
         return true;
     }
-    println!("{}", false);
+    //println!("{}", false);
     return false;
 }
 
@@ -110,7 +110,7 @@ fn sort_hand(hand:[i32;5])->[i32;5]{ //sorts the hand in increasing order
             }
         }
     }
-    println!("sorted hand is {:?}",sorted_hand);
+    //println!("sorted hand is {:?}",sorted_hand);
     return sorted_hand;
 }
 fn check_royal_flush(hand:[i32;5])->bool{ //checks the Royal Flush
@@ -169,7 +169,7 @@ fn check_pair(hand:[i32;5])->bool{
 
 fn get_high_card(hand:[i32;5])->i32{ //returns a high card
     let mut converted_hand=sort_hand(convert_hand(hand)); //obtain a hand in range from 0 to 12
-    println!("{:?} converted hand",converted_hand);
+    //println!("{:?} converted hand",converted_hand);
     if converted_hand==[0,1,2,3,12]{ //the only case when ace is low
         return 3;
     }
@@ -219,10 +219,11 @@ fn determine_winner(hand1:[i32;5],hand2:[i32;5])->[i32;5]{ //determines the winn
     if rank1<rank2{
         return hand2;
     }
+
     //TODO Tiebreakers should go here
-    //determineTieBreaker(hand1,hand2,rank1);
+    return determineTieBreaker(hand1,hand2,rank1);
 
-
+    /*
     let highcard1=get_high_card(hand1);
     let highcard2=get_high_card(hand2);
     if highcard1>highcard2{
@@ -239,6 +240,7 @@ fn determine_winner(hand1:[i32;5],hand2:[i32;5])->[i32;5]{ //determines the winn
     else{
         return hand2;
     }
+    */
 }
 
 
@@ -292,13 +294,15 @@ fn return_card_value_helper(card_number:i32)->String{ //returns a card value in 
 
 fn test(){
     //TODO Modify both lists and add proper test cases
-    let test_cases=[[1,2,3,4,5],[1,10,11,12,13]];
-    let correct_result=[["1C", "2C", "3C", "4C", "5C"],["10C", "11C", "12C", "13C", "1C"]];
+    let mut test_cases:[[i32;10];86]=[[14, 10, 17, 11, 15, 7, 16, 9, 18, 8],[16, 10, 18, 8, 14, 9, 17, 7, 15, 11],[16, 49, 14, 9, 17, 35, 15, 22, 18, 48],[16, 9, 14, 48, 15, 35, 18, 22, 17, 49],[23, 9, 49, 2, 10, 48, 50, 22, 36, 35],[49, 35, 23, 22, 50, 2, 10, 48, 36, 9],[48, 40, 34, 42, 21, 44, 8, 45, 35, 50],[35, 42, 34, 44, 21, 40, 8, 45, 48, 50],[5, 34, 2, 31, 4, 29, 3, 28, 7, 30],[4, 30, 2, 34, 3, 28, 5, 29, 7, 31],[2, 47, 3, 10, 31, 46, 32, 24, 17, 48],[32, 10, 31, 48, 2, 46, 3, 24, 17, 47],[28, 12, 15, 11, 2, 13, 30, 26, 29, 39],[28, 39, 2, 11, 15, 13, 30, 26, 29, 12],[22, 13, 16, 26, 30, 25, 43, 2, 3, 12],[3, 13, 30, 25, 43, 2, 22, 26, 16, 12],[14, 41, 15, 52, 1, 27, 2, 28, 51, 40],[1, 41, 15, 27, 2, 40, 51, 28, 14, 52],[23, 46, 41, 42, 10, 15, 48, 2, 44, 50],[44, 50, 23, 15, 41, 46, 48, 2, 10, 42],[7, 51, 6, 47, 8, 49, 13, 28, 41, 29],[41, 29, 13, 51, 6, 28, 8, 49, 7, 47],[41, 29, 12, 49, 6, 47, 8, 28, 7, 52],[12, 47, 7, 49, 6, 29, 8, 28, 41, 52],[47, 40, 20, 52, 7, 51, 46, 49, 33, 50],[7, 50, 46, 52, 47, 51, 33, 40, 20, 49],[17, 47, 18, 22, 16, 35, 15, 9, 14, 49],[17, 9, 15, 49, 14, 22, 18, 47, 16, 35],[14, 9, 17, 32, 16, 22, 18, 47, 15, 49],[14, 47, 17, 9, 15, 22, 18, 32, 16, 49],[17, 26, 16, 52, 18, 51, 14, 39, 15, 38],[15, 52, 16, 38, 14, 26, 18, 39, 17, 51],[10, 42, 23, 45, 49, 40, 50, 47, 36, 44],[23, 44, 49, 40, 36, 45, 50, 42, 10, 47],[34, 16, 48, 50, 21, 29, 8, 42, 35, 45],[8, 16, 48, 42, 34, 50, 21, 29, 35, 45],[50, 41, 23, 42, 10, 40, 36, 31, 49, 30],[50, 41, 36, 42, 10, 30, 23, 40, 49, 31],[31, 25, 32, 26, 2, 13, 30, 4, 3, 12],[2, 26, 31, 25, 30, 4, 3, 13, 32, 12],[30, 26, 31, 13, 32, 24, 2, 12, 3, 4],[30, 24, 2, 12, 32, 4, 3, 13, 31, 26],[2, 24, 3, 22, 31, 13, 30, 4, 32, 12],[31, 4, 30, 13, 2, 22, 3, 12, 32, 24],[3, 13, 1, 26, 5, 11, 9, 12, 7, 39],[3, 13, 1, 11, 9, 26, 5, 12, 7, 39],[3, 2, 1, 12, 5, 13, 7, 25, 9, 26],[5, 13, 7, 2, 1, 25, 3, 26, 9, 12],[3, 26, 1, 20, 9, 2, 5, 12, 7, 13],[9, 2, 5, 26, 7, 12, 1, 13, 3, 20],[6, 50, 7, 40, 41, 49, 8, 51, 13, 52],[8, 51, 41, 40, 6, 50, 13, 52, 7, 49],[6, 52, 7, 51, 26, 50, 13, 49, 8, 40],[7, 40, 13, 50, 6, 52, 26, 51, 8, 49],[21, 51, 8, 50, 26, 52, 13, 40, 6, 49],[8, 50, 6, 51, 26, 52, 21, 49, 13, 40],[21, 50, 26, 40, 34, 52, 13, 51, 8, 49],[26, 52, 34, 40, 13, 50, 8, 49, 21, 51],[17, 10, 15, 7, 14, 8, 16, 11, 18, 9],[18, 8, 14, 11, 17, 10, 15, 9, 16, 7],[15, 22, 18, 49, 17, 48, 16, 9, 14, 35],[14, 35, 18, 49, 16, 22, 17, 48, 15, 9],[17, 47, 3, 48, 32, 46, 31, 10, 2, 24],[31, 46, 17, 48, 2, 47, 32, 24, 3, 10],[13, 49, 8, 28, 41, 51, 7, 29, 6, 47],[8, 49, 13, 47, 7, 28, 6, 29, 41, 51],[16, 38, 15, 52, 18, 51, 14, 39, 17, 26],[17, 51, 14, 52, 16, 39, 15, 26, 18, 38],[17, 9, 18, 8, 16, 10, 14, 11, 15, 7],[16, 10, 15, 9, 17, 11, 18, 8, 14, 7],[18, 48, 15, 22, 17, 49, 14, 9, 16, 35],[14, 49, 18, 22, 16, 35, 17, 9, 15, 48],[3, 39, 2, 13, 30, 12, 32, 26, 31, 11],[2, 11, 30, 39, 31, 13, 32, 26, 3, 12],[33, 49, 46, 51, 47, 52, 20, 40, 7, 50],[47, 52, 33, 40, 20, 50, 7, 49, 46, 51],[17, 26, 15, 38, 18, 39, 16, 51, 14, 52],[18, 38, 16, 52, 15, 26, 14, 39, 17, 51],[32, 26, 2, 12, 30, 4, 31, 13, 3, 25],[2, 4, 3, 13, 32, 26, 30, 25, 31, 12],[32, 4, 2, 24, 30, 13, 3, 12, 31, 26],[3, 26, 32, 24, 2, 13, 30, 12, 31, 4],[3, 13, 32, 12, 31, 22, 30, 4, 2, 24],[3, 13, 32, 12, 31, 4, 2, 22, 30, 24],[34, 40, 26, 52, 13, 50, 21, 51, 8, 49],[26, 52, 21, 49, 8, 51, 13, 50, 34, 40]];
+    let correct_result=[["10C", "11C", "7C", "8C", "9C"],["10C", "11C", "7C", "8C", "9C"],["1D", "2D", "3D", "4D", "5D"],["1D", "2D", "3D", "4D", "5D"],["10C", "10D", "10H", "10S", "11S"],["10C", "10D", "10H", "10S", "11S"],["8C", "8D", "8H", "9H", "9S"],["8C", "8D", "8H", "9H", "9S"],["2H", "3H", "4H", "5H", "8H"],["2H", "3H", "4H", "5H", "8H"],["10C", "11D", "7S", "8S", "9S"],["10C", "11D", "7S", "8S", "9S"],["11C", "12C", "13C", "13D", "13H"],["11C", "12C", "13C", "13D", "13H"],["12C", "12D", "13C", "13D", "2C"],["12C", "12D", "13C", "13D", "2C"],["13S", "1H", "1S", "2H", "2S"],["13S", "1H", "1S", "2H", "2S"],["10C", "10D", "2S", "5S", "9S"],["10C", "10D", "2S", "5S", "9S"],["13C", "2S", "6C", "7C", "8C"],["13C", "2S", "6C", "7C", "8C"],["10S", "13S", "2H", "3H", "8S"],["10S", "13S", "2H", "3H", "8S"],["10S", "11S", "12S", "13S", "1S"],["10S", "11S", "12S", "13S", "1S"],["1D", "2D", "3D", "4D", "5D"],["1D", "2D", "3D", "4D", "5D"],["1D", "2D", "3D", "4D", "5D"],["1D", "2D", "3D", "4D", "5D"],["1D", "2D", "3D", "4D", "5D"],["1D", "2D", "3D", "4D", "5D"],["10C", "10D", "10H", "10S", "11S"],["10C", "10D", "10H", "10S", "11S"],["8C", "8D", "8H", "9H", "9S"],["8C", "8D", "8H", "9H", "9S"],["10C", "10D", "10H", "10S", "11S"],["10C", "10D", "10H", "10S", "11S"],["2C", "3C", "4H", "5H", "6H"],["2C", "3C", "4H", "5H", "6H"],["2C", "3C", "4H", "5H", "6H"],["2C", "3C", "4H", "5H", "6H"],["2C", "3C", "4H", "5H", "6H"],["2C", "3C", "4H", "5H", "6H"],["1C", "3C", "5C", "7C", "9C"],["1C", "3C", "5C", "7C", "9C"],["1C", "3C", "5C", "7C", "9C"],["1C", "3C", "5C", "7C", "9C"],["1C", "3C", "5C", "7C", "9C"],["1C", "3C", "5C", "7C", "9C"],["10S", "11S", "12S", "13S", "1S"],["10S", "11S", "12S", "13S", "1S"],["10S", "11S", "12S", "13S", "1S"],["10S", "11S", "12S", "13S", "1S"],["10S", "11S", "12S", "13S", "1S"],["10S", "11S", "12S", "13S", "1S"],["10S", "11S", "12S", "13S", "1S"],["10S", "11S", "12S", "13S", "1S"],["10C", "11C", "7C", "8C", "9C"],["10C", "11C", "7C", "8C", "9C"],["1D", "2D", "3D", "4D", "5D"],["1D", "2D", "3D", "4D", "5D"],["10C", "11D", "7S", "8S", "9S"],["10C", "11D", "7S", "8S", "9S"],["13C", "2S", "6C", "7C", "8C"],["13C", "2S", "6C", "7C", "8C"],["1D", "2D", "3D", "4D", "5D"],["1D", "2D", "3D", "4D", "5D"],["10C", "11C", "7C", "8C", "9C"],["10C", "11C", "7C", "8C", "9C"],["1D", "2D", "3D", "4D", "5D"],["1D", "2D", "3D", "4D", "5D"],["2C", "3C", "4H", "5H", "6H"],["2C", "3C", "4H", "5H", "6H"],["10S", "11S", "12S", "13S", "1S"],["10S", "11S", "12S", "13S", "1S"],["1D", "2D", "3D", "4D", "5D"],["1D", "2D", "3D", "4D", "5D"],["2C", "3C", "4H", "5H", "6H"],["2C", "3C", "4H", "5H", "6H"],["2C", "3C", "4H", "5H", "6H"],["2C", "3C", "4H", "5H", "6H"],["2C", "3C", "4H", "5H", "6H"],["2C", "3C", "4H", "5H", "6H"],["10S", "11S", "12S", "13S", "1S"],["10S", "11S", "12S", "13S", "1S"]];
     for i in 0..test_cases.len(){
-        //let result=format_output(deal(test_cases[i])); //TODO uncomment this line to tell the overall program
-        let result=format_output(test_cases[i]); //TODO comment this line out
+        let result=format_output(deal(&mut test_cases[i])); //TODO uncomment this line to tell the overall program
+        //let result=format_output(test_cases[i]); //TODO comment this line out
         if result!=correct_result[i]{
             println!("Case-{:?} Correct Result-{:?} Incorrect Result/Output-{:?}",test_cases[i],correct_result[i],result);
+        }else {
+            println!("correct");
         }
     }
 }
@@ -318,9 +322,8 @@ fn test(){
 
 fn determineTieBreaker(hand1:[i32;5],hand2:[i32;5],rank:i32)->[i32;5]{
     if rank==10 {
-        //return tieBreakRoyalFlush(hand1,hand2);//
+        return tieBreakRoyalFlush(hand1,hand2);//
     }
-    /*
     else if rank==9 {
         return tieBreakStraightFlush(hand1,hand2);//9;
     }
@@ -346,10 +349,7 @@ fn determineTieBreaker(hand1:[i32;5],hand2:[i32;5],rank:i32)->[i32;5]{
         return tieBreakPair(hand1,hand2);//2;
     }
     return tieBreakHigh(hand1,hand2);
-    */
-
-    //temp
-    return tieBreakRoyalFlush(hand1,hand2);
+    
 }
 
 
@@ -433,7 +433,7 @@ fn tieBreakTwoPair(hand1:[i32;5],hand2:[i32;5])->[i32;5]{
     }
     //compare kicker
     let kicker1 = getValueOfRepeat(hand1, 1);
-    let kicker2 = getValueOfRepeat(hand2,2);
+    let kicker2 = getValueOfRepeat(hand2,1);
     if(kicker1>kicker2){
         return hand1;
     } else if (kicker2>kicker1){
